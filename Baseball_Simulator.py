@@ -300,6 +300,7 @@ def calcStats(leagueData):
             if pitcher["IP"] != 0:
                 era = pitcher["Runs"]*9/pitcher["IP"]
                 pitcher["ERA"] = round(era, 2)
+            pitcher["Pitches"] = 0
     return leagueData
 
 def setLineups(awayTeamData, homeTeamData):
