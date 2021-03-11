@@ -1,0 +1,42 @@
+﻿A,Team,Name,Pos,Contact,Power,Discipline,G,PA,AB,H,2B,3B,HR,RBI,BB,SO,SB,AVG,OBP,SLG,OPS,OPS+,WAR
+,Boston Red Sox,Christian Vazquez,C,45,40,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Mitch Moreland,1B,45,60,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Brock Holt,2B,55,50,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Xander Bogaerts,SS,55,50,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Rafael Devers,3B,50,65,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Andrew Benintendi,LF,60,60,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Jackie Bradley Jr. ,CF,50,55,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Mookie Betts,RF,80,60,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,J.D. Martinez,RF,45,85,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Bobby Dalbec,3B,50,50,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Willson Contreras,C,55,60,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Anthony Rizzo,1B,65,60,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Addison Russell,2B,30,55,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Javier Baez,SS,55,70,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Kris Bryant,3B,55,65,65,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Kyle Schwarber,LF,40,80,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Albert Almora,CF,55,40,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Jason Heyward,RF,50,40,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Nico Hoerner,2B,55,30,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,David Bote,3B,45,55,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Jason Kipnis,2B,45,55,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Gary Sanchez,C,35,70,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Luke Voit,1B,40,70,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,DJ LeMahieu,2B,85,40,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Didi Gregorius,SS,55,55,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Gio Urshela,3B,50,55,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Aaron Hicks,LF,45,55,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Brett Gardner,CF,50,40,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Aaron Judge,RF,55,100,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Edwin Encarnacion,1B,40,80,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Clint Frazier,LF,45,55,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Yadier Molina,C,65,45,45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Paul Goldschmidt,1B,60,70,70,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Kolten Wong,2B,55,40,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Paul DeJong,SS,45,60,55,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Matt Carpenter,3B,50,60,75,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Marcell Ozuna,LF,55,65,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Harrison Bader,CF,45,45,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Dexter Fowler,RF,55,45,60,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Jose Martinez,1B,45,55,50,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Max Schrok,2B,55,40,40,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
