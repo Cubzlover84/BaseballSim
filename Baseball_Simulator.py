@@ -38,6 +38,7 @@ get uber-consistent guys like Freddie Freeman who put up like the exact same num
 # 10.21.2020 More text upgrades, created rough approximations of real player ratings, added a test-season function for various needs, interface is now usable multiple times
 # 11.09.2020 Data structure was switched from lists to dictionary, effiency improvements, basic stealing functionality, simple lineup-selecting AI, WAR calculation
 # 11.24.2020 Basic pitching functionality added, simple stats (IP, Runs, ERA) recorded, outcomes are determined by both pitcher and hitter ratings
+# 3.11.2021 First changes of the new year, updated the pitching strategy and added it to github! Very cool Austin!
 
 
 
@@ -157,7 +158,7 @@ def genSchedule(teams):
     random.shuffle(homeTeam)
     return awayTeam, homeTeam
 
-def showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList):
+def showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList, awayPitcherList, homePitcherList):
         leagueData = calcStats(leagueData)        
         print("\n")
         printData = []
@@ -171,11 +172,31 @@ def showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBat
                 printData[i].append(stats)
         print(tabulate(printData, headers = header))
         printData = []
-        print(awayTeamData["Teamname"], "Box Score")
+        print(homeTeamData["Teamname"], "Box Score")
         for i in range(len(homeBatterList)):
             printData.append([])
             for stats in homeBatterList[i].values():
                 printData[i].append(stats)
+        print(tabulate(printData, headers = header))
+        # Now do pitchers
+        printData = []
+        header = []
+        print(awayTeamData["Teamname"], "Pitching")
+        for key in awayTeamData["Pitchers"][0].keys():
+            header.append(key)
+        for i in range(len(awayPitcherList)):
+            if awayPitcherList[i]["IP"] > 0:
+                printData.append([])
+                for stats in awayPitcherList[i].values():
+                    printData[len(printData)-1].append(stats)
+        print(tabulate(printData, headers = header))
+        printData = []
+        print(homeTeamData["Teamname"], "Pitching")
+        for i in range(len(homePitcherList)):
+            if homePitcherList[i]["IP"] > 0:
+                printData.append([])
+                for stats in homePitcherList[i].values():
+                    printData[len(printData)-1].append(stats)
         print(tabulate(printData, headers = header))
         
         
@@ -380,7 +401,6 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
         homeHits = 0
         awayHits = 0
         linescore = [[awayTeam],[homeTeam]]
-        pitches = 0
         
         if isLive == True:
                 print("\n")
@@ -1216,7 +1236,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         time.sleep(2*playSpeed)
                 # Pitching Changes
                 currentPitcher["IP"] += 1
-                pitchLimit = 100
+                pitchLimit = 80
                 if awayPitcher["Pitches"] > pitchLimit:
                     if isLive == True:
                         print("Pitching Change")
@@ -1270,7 +1290,9 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                 print(winner,"win!")
                 print("\n")
                 print(tabulate(linescore, headers = headerList))
-                showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList)
+                awayPitcherList = awayStarters + awayRelievers
+                homePitcherList = homeStarters + homeRelievers
+                showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList,awayPitcherList, homePitcherList)
         return winner, leagueData
 
 def runPlayerSeason(contact, power, discipline, Seasons):
