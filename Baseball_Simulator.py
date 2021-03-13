@@ -38,7 +38,7 @@ get uber-consistent guys like Freddie Freeman who put up like the exact same num
 # 10.21.2020 More text upgrades, created rough approximations of real player ratings, added a test-season function for various needs, interface is now usable multiple times
 # 11.09.2020 Data structure was switched from lists to dictionary, effiency improvements, basic stealing functionality, simple lineup-selecting AI, WAR calculation
 # 11.24.2020 Basic pitching functionality added, simple stats (IP, Runs, ERA) recorded, outcomes are determined by both pitcher and hitter ratings
-# 3.11.2021 First changes of the new year, updated the pitching strategy and added it to github! Very cool Austin!
+# 3.11.2021 First changes of the new year, updated the pitching strategy and added it to github! Very cool Austin! You now have this on a flash drive, google drive, github, and local
 
 
 
@@ -321,7 +321,7 @@ def calcStats(leagueData):
             if pitcher["IP"] != 0:
                 era = pitcher["Runs"]*9/pitcher["IP"]
                 pitcher["ERA"] = round(era, 2)
-            pitcher["Pitches"] = 0
+            #pitcher["Pitches"] = 0
     return leagueData
 
 def setLineups(awayTeamData, homeTeamData):
@@ -400,6 +400,9 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
         awayRuns = 0
         homeHits = 0
         awayHits = 0
+        awayRole = "Starter"
+        homeRole = "Starter"
+        pitchLimit = 90 # Base Amount for Starters
         linescore = [[awayTeam],[homeTeam]]
         
         if isLive == True:
@@ -1235,24 +1238,36 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         print("Inning Over.", awayTeam, awayRuns,"-",homeRuns, homeTeam)
                         time.sleep(2*playSpeed)
                 # Pitching Changes
+                awayUsed = []
+                homeUsed = []
+                
                 currentPitcher["IP"] += 1
-                pitchLimit = 80
                 if awayPitcher["Pitches"] > pitchLimit:
                     if isLive == True:
                         print("Pitching Change")
                     if len(awayRelievers) > 1:
-                        #awayPitcherList.remove(awayPitcher)
-                        awayPitcher = random.choice(awayRelievers)
+                        if awayRole != "Starter":
+                            awayUsed.append(awayPitcher)
+                        awayAvailable = awayRelievers
+                        for i in awayUsed:
+                            awayAvailable.remove(i)
+                        awayPitcher = random.choice(awayAvailable)
                         awayPitcher["G"] += 1
-                        pitchLimit = 20
-                elif homePitcher["Pitches"] > pitchLimit:
+                    pitchLimit = 20
+                    awayRole = "Reliever"
+                if homePitcher["Pitches"] > pitchLimit:
                     if isLive == True:
                         print("Pitching Change")
-                    if len(homeRelievers) > 1: # If there are more pitchers available
-                        #homePitcherList.remove(homePitcher)
-                        homePitcher = random.choice(homeRelievers)
+                    if len(homeRelievers) > 1: # If there are more pitchers available in the pen (Include starters if necessary)
+                        if homeRole != "Starter":
+                            homeUsed.append(homePitcher)
+                        homeAvailable = homeRelievers
+                        for i in homeUsed:
+                            homeAvailable.remove(i)
+                        homePitcher = random.choice(homeAvailable)
                         homePitcher["G"] += 1
-                        pitchLimit = 20
+                    pitchLimit = 20
+                    homeRole = "Reliever"
                         
                 halfInning = halfInning + 1 # Adds a half-inning every time 3 outs are recorded
                 if halfInning == 17: # If it is the top of the ninth inning or later and the home team is leading, the home team will not bat
