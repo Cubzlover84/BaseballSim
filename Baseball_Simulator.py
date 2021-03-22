@@ -364,8 +364,13 @@ def setLineups(awayTeamData, homeTeamData):
     for i in awayPitcherList: # Reset Pitches to 0 every game (duh)
         i["Pitches"] = 0
     awayStarters = awayPitcherList[0:5] # Selects top 5 as starters and selects a random one
-    awayRelievers = awayPitcherList[5:] # Adds the rest to the pen
-    awayPitcher = random.choice(awayStarters) # in the future needs to be an ordered sequence
+    awayRelievers = awayPitcherList[5:16] # Adds the rest to the pen
+    lowestGames = 100
+    awayPitcher = random.choice(awayStarters)
+    for i in awayStarters: # Finds the starter with the least amount of games and starts him
+        if i["GS"] < lowestGames:
+            lowestGames = i["GS"]
+            awayPitcher = i
     awayPitcher["G"] += 1
     awayPitcher["GS"] +=1
     for i in homeTeamData["Pitchers"].values():
@@ -373,8 +378,13 @@ def setLineups(awayTeamData, homeTeamData):
     for i in homePitcherList:
         i["Pitches"] = 0
     homeStarters = homePitcherList[0:5]
-    homeRelievers = homePitcherList[5:]
+    homeRelievers = homePitcherList[5:16]
     homePitcher = random.choice(homeStarters)
+    lowestGames = 100
+    for i in homeStarters:  # Finds the starter with the least amount of games and starts him
+        if i["GS"] < lowestGames:
+            lowestGames = i["GS"]
+            homePitcher = i
     homePitcher["G"] += 1
     homePitcher["GS"] +=1
     return awayBatterList, homeBatterList, awayTeamData, homeTeamData, awayPitcher, homePitcher, awayStarters, awayRelievers, homeStarters, homeRelievers
@@ -543,7 +553,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         outcome = playAtBat(probHR, prob3B, prob2B, prob1B, probBB, probFO, probGO, probK)
                         if outs == 3: # If the inning ends on a baserunning mistake the AB will not happen
                             outcome = "steal"
-                        currentPitcher["Pitches"] += random.choice([1,2,3,4,5,6])
+                        currentPitcher["Pitches"] += round(random.normalvariate(4,1), 0)
 
                         if outcome == "Flyout": # Inputs sacrifice flies and other base runner movement from flyouts
                                 if isLive == True:
@@ -1243,11 +1253,9 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         print("Inning Over.", awayTeam, awayRuns,"-",homeRuns, homeTeam)
                         time.sleep(2*playSpeed)
                 # Pitching Changes
-
                 currentPitcher["IP"] += 1
                 if awayPitcher["Pitches"] > pitchLimit:
-                    if isLive == True:
-                        print("Pitching Change")
+
                     if len(awayRelievers) > 1:
                         if awayRole != "Starter":
                             awayUsed.append(awayPitcher)
@@ -1259,9 +1267,9 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         awayPitcher["G"] += 1
                     pitchLimit = random.randint(10,30)
                     awayRole = "Reliever"
-                if homePitcher["Pitches"] > pitchLimit:
                     if isLive == True:
-                        print("Pitching Change")
+                        print("Pitching Change: RP", awayPitcher, "is now in the game")
+                if homePitcher["Pitches"] > pitchLimit:
                     if len(homeAvailable) > 1: # If there are more pitchers available in the pen (Include starters if necessary)
                         if homeRole != "Starter": # If a reliever is being subbed out
                             homeUsed.append(homePitcher)
@@ -1273,7 +1281,10 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         homePitcher["G"] += 1
                     pitchLimit = random.randint(10,30) # More or less 1 or 2 innings
                     homeRole = "Reliever" # Status of the current reliever
-                        
+                    if isLive == True:
+                        print("Pitching Change: RP", homePitcher, "is now in the game")
+
+                # Inning shenanigans
                 halfInning = halfInning + 1 # Adds a half-inning every time 3 outs are recorded
                 if halfInning == 17: # If it is the top of the ninth inning or later and the home team is leading, the home team will not bat
                     if halfInning%2 == 1:
