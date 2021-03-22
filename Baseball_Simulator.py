@@ -108,7 +108,7 @@ def readCSV(batters, pitchers):
     return leagueData
 
 def writeCSV(file): #Re-Writes the Data to a new file for viewing
-    return true
+    print(7)
 
 def createPlayers(leagueData): # Re-writes the 3 rating data to be random (later will also have random players too)
     import random
@@ -159,7 +159,7 @@ def genSchedule(teams):
     return awayTeam, homeTeam
 
 def showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList, awayPitcherList, homePitcherList):
-        leagueData = calcStats(leagueData)        
+        leagueData = calcStats(leagueData, False)
         print("\n")
         printData = []
         header = []
@@ -302,7 +302,7 @@ def scoreRuns(runs, topOrBottom, awayRuns, homeRuns, isLive, awayTeam, homeTeam,
     currentBatter["RBI"] += runs
     return awayRuns, homeRuns, currentBatter
 
-def calcStats(leagueData):
+def calcStats(leagueData, isSeason):
     for j in range(4):
         for i in range(len(leagueData["Teams"][j]["Players"])):
             batter = leagueData["Teams"][j]["Players"][i]
@@ -321,7 +321,8 @@ def calcStats(leagueData):
             if pitcher["IP"] != 0:
                 era = pitcher["Runs"]*9/pitcher["IP"]
                 pitcher["ERA"] = round(era, 2)
-            #pitcher["Pitches"] = 0
+            if isSeason == True:
+                pitcher["Pitches"] = 0
     return leagueData
 
 def setLineups(awayTeamData, homeTeamData):
@@ -402,7 +403,11 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
         awayHits = 0
         awayRole = "Starter"
         homeRole = "Starter"
-        pitchLimit = 90 # Base Amount for Starters
+        homeAvailable = homeRelievers
+        awayAvailable = awayRelievers
+        awayUsed = [] # Pitchers Used in the game already
+        homeUsed = []
+        pitchLimit = random.randint(80,110) # Base Amount for Starters
         linescore = [[awayTeam],[homeTeam]]
         
         if isLive == True:
@@ -1238,9 +1243,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         print("Inning Over.", awayTeam, awayRuns,"-",homeRuns, homeTeam)
                         time.sleep(2*playSpeed)
                 # Pitching Changes
-                awayUsed = []
-                homeUsed = []
-                
+
                 currentPitcher["IP"] += 1
                 if awayPitcher["Pitches"] > pitchLimit:
                     if isLive == True:
@@ -1248,32 +1251,35 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                     if len(awayRelievers) > 1:
                         if awayRole != "Starter":
                             awayUsed.append(awayPitcher)
-                        awayAvailable = awayRelievers
                         for i in awayUsed:
-                            awayAvailable.remove(i)
+                            for j in awayAvailable:
+                                if i["Name"]==j["Name"]:
+                                    awayAvailable.remove(i)
                         awayPitcher = random.choice(awayAvailable)
                         awayPitcher["G"] += 1
-                    pitchLimit = 20
+                    pitchLimit = random.randint(10,30)
                     awayRole = "Reliever"
                 if homePitcher["Pitches"] > pitchLimit:
                     if isLive == True:
                         print("Pitching Change")
-                    if len(homeRelievers) > 1: # If there are more pitchers available in the pen (Include starters if necessary)
-                        if homeRole != "Starter":
+                    if len(homeAvailable) > 1: # If there are more pitchers available in the pen (Include starters if necessary)
+                        if homeRole != "Starter": # If a reliever is being subbed out
                             homeUsed.append(homePitcher)
-                        homeAvailable = homeRelievers
-                        for i in homeUsed:
-                            homeAvailable.remove(i)
+                        for i in homeUsed: # Remove all used relievers
+                            for j in homeAvailable:
+                                if i["Name"] == j["Name"]:
+                                    homeAvailable.remove(i)
                         homePitcher = random.choice(homeAvailable)
                         homePitcher["G"] += 1
-                    pitchLimit = 20
-                    homeRole = "Reliever"
+                    pitchLimit = random.randint(10,30) # More or less 1 or 2 innings
+                    homeRole = "Reliever" # Status of the current reliever
                         
                 halfInning = halfInning + 1 # Adds a half-inning every time 3 outs are recorded
                 if halfInning == 17: # If it is the top of the ninth inning or later and the home team is leading, the home team will not bat
                     if halfInning%2 == 1:
                         if homeRuns > awayRuns:
                             maxInning = halfInning
+                            linescore[1][9] = "X"
                 if halfInning > 17: # If the game is tied after regulation, an extra inning will continue to be added until the game is over
                     if maxInning%2 == 0:    
                         if homeRuns == awayRuns:
@@ -1305,8 +1311,8 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                 print(winner,"win!")
                 print("\n")
                 print(tabulate(linescore, headers = headerList))
-                awayPitcherList = awayStarters + awayRelievers
-                homePitcherList = homeStarters + homeRelievers
+                awayPitcherList = awayStarters + awayUsed + awayAvailable # Returns the starters plus both categories of relievers
+                homePitcherList = homeStarters + homeUsed + homeAvailable
                 showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList,awayPitcherList, homePitcherList)
         return winner, leagueData
 
@@ -1385,7 +1391,7 @@ def main():
                 awaySchedule, homeSchedule = genSchedule(leagueData["Teams"].keys())
                 for i in range(len(homeSchedule)):
                     winner, leagueData = playGame(awaySchedule[i],homeSchedule[i], playSpeed, False, leagueData)
-                leagueData = calcStats(leagueData)
+                leagueData = calcStats(leagueData, True)
 
                 #Formatting Stats
                 for j in range(4): 
