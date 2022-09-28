@@ -12,7 +12,7 @@
 # More code but that's why you're taking webtech. 
 
 # To-do list
-      - Web Scrap for Data for all teams and/or more teams in the database
+     - Web Scrap for Data for all teams and/or more teams in the database
       - Add a speed rating + stolen base numbers + baserunning
           - Would require revamping the bases system
       - Real-time standings function
@@ -29,7 +29,7 @@
 ok bottom line outcomes are still too random. You can define probabilities but even over 600+ PA season things get a little out of wack imo. I guess with this you won't
 get uber-consistent guys like Freddie Freeman who put up like the exact same numbers every year. Maybe try recording BABIP as a way to track randomness
  '''
-# New Version History Starting 6.8.2020
+# New Version History Starting 6.8.2020 (Base code developed long before this)
 # 6.8.2020: Significant updates to the code, including implementation of player ratings affecting outcomes, tracking some stats (HR only), added walk-off ending
 # 6.10.2020: Removed redundant variable assignments and simplified the game code using functions, added season-long stat tracking for all major stats
 # 6.11.2020: Data is now read from a CSVfile, ratings can be created randomly using createPlayers, runPlayerSeasons simulates x seasons for player with those ratings
@@ -39,7 +39,7 @@ get uber-consistent guys like Freddie Freeman who put up like the exact same num
 # 11.09.2020 Data structure was switched from lists to dictionary, effiency improvements, basic stealing functionality, simple lineup-selecting AI, WAR calculation
 # 11.24.2020 Basic pitching functionality added, simple stats (IP, Runs, ERA) recorded, outcomes are determined by both pitcher and hitter ratings
 # 3.11.2021 First changes of the new year, updated the pitching strategy and added it to github! Very cool Austin! You now have this on a flash drive, google drive, github, and local
-
+# 5.16.2021 Pitchers can now get injured, and they will be replaced by the next player on the roster. Still broken for starters in terms of skipping starts. 
 
 
 # Game Code
@@ -207,8 +207,8 @@ def setProb(contact, power, discipline, stuff, movement, control): # Sets the pr
         base1B = 0.153
         baseBB = 0.08
         baseFO = 0.25
-        baseGO = 0.245
-        baseK = 0.20
+        baseGO = 0.225
+        baseK = 0.22
         conBonus = contact - stuff # Establishes how high or below league average the value is 
         powBonus = power - movement
         disBonus = discipline - control
@@ -302,7 +302,7 @@ def scoreRuns(runs, topOrBottom, awayRuns, homeRuns, isLive, awayTeam, homeTeam,
     currentBatter["RBI"] += runs
     return awayRuns, homeRuns, currentBatter
 
-def calcStats(leagueData, isSeason):
+def calcStats(leagueData, isSeason): # Need to adjust league average numbers
     for j in range(4):
         for i in range(len(leagueData["Teams"][j]["Players"])):
             batter = leagueData["Teams"][j]["Players"][i]
@@ -325,7 +325,7 @@ def calcStats(leagueData, isSeason):
                 pitcher["Pitches"] = 0
     return leagueData
 
-def setLineups(awayTeamData, homeTeamData):
+def setLineups(awayTeamData, homeTeamData): # Should pick top 9 each season
     import random
     awayBatterList = {}
     weightedRatings = []
@@ -363,11 +363,15 @@ def setLineups(awayTeamData, homeTeamData):
         awayPitcherList.append(i)
     for i in awayPitcherList: # Reset Pitches to 0 every game (duh)
         i["Pitches"] = 0
+    # Add Injury capacity for pitchers - 50% anyone is injured, then randomly selects one to be out
+    if random.uniform(0,1) > 0.1:
+        injured = random.choice(awayPitcherList)
+        awayPitcherList.remove(injured)
     awayStarters = awayPitcherList[0:5] # Selects top 5 as starters and selects a random one
-    awayRelievers = awayPitcherList[5:16] # Adds the rest to the pen
+    awayRelievers = awayPitcherList[5:15] # Adds the rest to the pen, limited by roster spots
     lowestGames = 100
     awayPitcher = random.choice(awayStarters)
-    for i in awayStarters: # Finds the starter with the least amount of games and starts him
+    for i in awayStarters: # Finds the starter with the least amount of games and starts him, to simulate a rotation (add rest days?) (Need fixed order)
         if i["GS"] < lowestGames:
             lowestGames = i["GS"]
             awayPitcher = i
@@ -377,8 +381,11 @@ def setLineups(awayTeamData, homeTeamData):
         homePitcherList.append(i)
     for i in homePitcherList:
         i["Pitches"] = 0
+    if random.uniform(0,1) > 0.1:
+        injured = random.choice(homePitcherList)
+        homePitcherList.remove(injured)
     homeStarters = homePitcherList[0:5]
-    homeRelievers = homePitcherList[5:16]
+    homeRelievers = homePitcherList[5:15]
     homePitcher = random.choice(homeStarters)
     lowestGames = 100
     for i in homeStarters:  # Finds the starter with the least amount of games and starts him
@@ -511,7 +518,8 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                 text = ["is at the plate", "steps up", "gets ready to hit", "steps into the box", "adjusts his batting gloves"]
                                 print(currentBatter["Name"], random.choice(text))
                                 time.sleep(playSpeed)
-                                print(currentPitcher["Name"], "is on the mound")
+                                pitchText = ["is on the mound", "looks in for the sign", "gets set for the pitch", "comes set"]
+                                print(currentPitcher["Name"], random.choice(pitchText))
                                 #if playSpeed != 1 and isLive == True:
                                     #pause = input("")
                                 print(random.choice(["Here's the pitch..", "The windup, and the delivery..", "The pitcher fires...", "Here it comes..", "The full-count delivery..."]))
@@ -1265,10 +1273,10 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                     awayAvailable.remove(i)
                         awayPitcher = random.choice(awayAvailable)
                         awayPitcher["G"] += 1
-                    pitchLimit = random.randint(10,30)
+                    pitchLimit = random.randint(10,25)
                     awayRole = "Reliever"
                     if isLive == True:
-                        print("Pitching Change: RP", awayPitcher, "is now in the game")
+                        print("Pitching Change: RP", awayPitcher["Name"], "is now in the game")
                 if homePitcher["Pitches"] > pitchLimit:
                     if len(homeAvailable) > 1: # If there are more pitchers available in the pen (Include starters if necessary)
                         if homeRole != "Starter": # If a reliever is being subbed out
@@ -1279,10 +1287,10 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                     homeAvailable.remove(i)
                         homePitcher = random.choice(homeAvailable)
                         homePitcher["G"] += 1
-                    pitchLimit = random.randint(10,30) # More or less 1 or 2 innings
+                    pitchLimit = random.randint(10,25) # More or less 1 or 2 innings
                     homeRole = "Reliever" # Status of the current reliever
                     if isLive == True:
-                        print("Pitching Change: RP", homePitcher, "is now in the game")
+                        print("Pitching Change: RP", homePitcher["Name"], "is now in the game")
 
                 # Inning shenanigans
                 halfInning = halfInning + 1 # Adds a half-inning every time 3 outs are recorded
@@ -1327,7 +1335,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                 showBoxScore(leagueData, awayTeamData, homeTeamData, awayBatterList, homeBatterList,awayPitcherList, homePitcherList)
         return winner, leagueData
 
-def runPlayerSeason(contact, power, discipline, Seasons):
+def runPlayerSeason(contact, power, discipline, Seasons): 
     totalData = []
     for j in range(Seasons):
         simData = [contact, power, discipline]
@@ -1385,7 +1393,7 @@ def main():
                     print("Red Sox = 4")
                     awayTeam = int(input("What team would you like to play as?")) - 1
                     homeTeam = int(input("Who would you like the opponent to be?")) - 1
-                    playSpeed = float(input("How fast would you like to play? (Pick a 0 or 1)")) # 1 = about 600 seconds, 0.5 = 300, etc etc
+                    playSpeed = float(input("How fast would you like to play? (0 = fastest, 1 = 10 minute delay")) # 1 = about 600 seconds, 0.5 = 300, etc etc
                     leagueData = readCSV("BaseballSimBatters.csv", "BaseballSimPitchers.csv")
                     #leagueData = createPlayers(leagueData)
                     playGame(awayTeam,homeTeam, playSpeed, True, leagueData)

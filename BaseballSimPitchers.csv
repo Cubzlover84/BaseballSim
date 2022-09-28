@@ -1,9 +1,16 @@
 ﻿A,Team,Name,Position,Stuff,Movement,Control,G,GS,IP,K,HR,BB,Runs,ERA,Pitches
-,Chicago Cubs,Kyle Hendricks,P,45,55,70,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Carlos Martinez,P,55,40,40,0,0,0,0,0,0,0,0,0
-,New York Yankees,Luis Severino,P,60,50,55,0,0,0,0,0,0,0,0,0
 ,Boston Red Sox,Chris Sale,P,70,40,60,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Yu Darvish,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Martin Perez,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Nathan Eovaldi,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Chris Mazza,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Zack Godley,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Matt Barnes,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Ryan Weber,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Phillips Valdez,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Ryan Brasier,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Boston Red Sox,Austin Brice,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Kyle Hendricks,P,45,55,70,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Yu Darvish,P,100,50,50,0,0,0,0,0,0,0,0,0
 ,Chicago Cubs,Alec Mills,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,Chicago Cubs,Jon Lester,P,50,30,50,0,0,0,0,0,0,0,0,0
 ,Chicago Cubs,Adbert Alzolay,P,50,50,50,0,0,0,0,0,0,0,0,0
@@ -13,17 +20,15 @@
 ,Chicago Cubs,Dan Winkler,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,Chicago Cubs,Rowan Wick,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,Chicago Cubs,Kyle Ryan,P,50,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Adam Wainwright,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Jack Flaherty,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Dakota Hudson,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Kwang Hyun Kim,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Daniel Ponce de Leon,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Johan Oviedo,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Giovanny Gallegos,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Genesis Cabrera,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Tyler Webb,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,John Gant,P,80,50,50,0,0,0,0,0,0,0,0,0
-,St. Louis Cardinals,Andrew Miller,P,80,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Duane Underwood Jr.,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Craig Kimbrel,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Colin Rea,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Jason Adam,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Jose Quintana,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Casey Sadler,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Tyson Miller,P,50,50,50,0,0,0,0,0,0,0,0,0
+,Chicago Cubs,Rex Brothers,P,70,50,0,0,0,0,0,0,0,0,0,0
+,New York Yankees,Luis Severino,P,60,50,55,0,0,0,0,0,0,0,0,0
 ,New York Yankees,Gerrit Cole,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,New York Yankees,J.A. Happ,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,New York Yankees,Masahiro Tanaka,P,50,50,50,0,0,0,0,0,0,0,0,0
@@ -35,20 +40,15 @@
 ,New York Yankees,Jonathan Holder,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,New York Yankees,Luis Cessa,P,50,50,50,0,0,0,0,0,0,0,0,0
 ,New York Yankees,Adam Ottavino,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Martin Perez,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Nathan Eovaldi,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Chris Mazza,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Zack Godley,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Matt Barnes,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Ryan Weber,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Phillips Valdez,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Ryan Brasier,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Boston Red Sox,Austin Brice,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Duane Underwood Jr.,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Craig Kimbrel,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Colin Rea,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Jason Adam,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Jose Quintana,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Casey Sadler,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Tyson Miller,P,50,50,50,0,0,0,0,0,0,0,0,0
-,Chicago Cubs,Rex Brothers,P,70,50,0,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Carlos Martinez,P,55,40,40,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Adam Wainwright,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Jack Flaherty,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Dakota Hudson,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Kwang Hyun Kim,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Daniel Ponce de Leon,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Johan Oviedo,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Giovanny Gallegos,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Genesis Cabrera,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Tyler Webb,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,John Gant,P,80,50,50,0,0,0,0,0,0,0,0,0
+,St. Louis Cardinals,Andrew Miller,P,80,50,50,0,0,0,0,0,0,0,0,0
