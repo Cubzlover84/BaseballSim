@@ -215,7 +215,7 @@ def setProb(contact, power, discipline, stuff, movement, control): # Sets the pr
         probHR = baseHR + baseHR*(powBonus*0.04) # new probability is the based probability plus the bonus* a constant 
         if probHR < 0: # Prevents negative counting stats (lol)
                 probHR = 0.0001
-        prob3B = base3B + base3B*(conBonus*0.002 + powBonus*0.005)
+        prob3B = base3B + base3B*(conBonus*0.002 + powBonus*0.005) #take log?
         if probHR < 0:
                 prob3B = 0.0001
         prob2B = base2B + base2B*(conBonus*0.01 + powBonus*0.0015)
@@ -224,10 +224,10 @@ def setProb(contact, power, discipline, stuff, movement, control): # Sets the pr
         prob1B = base1B + base1B*(conBonus*0.007)
         if prob1B < 0:
                 prob1B = 0.0001
-        probBB = baseBB + baseBB*(disBonus*0.027)
-        if probBB < 0.025:
-                probBB = 0.025
-        probK = baseK + baseK*(conBonus*-0.015) #disBonus*-0.005)
+        probBB = baseBB + baseBB*(disBonus*0.03)
+        if probBB < 0.02:
+                probBB = 0.02
+        probK = baseK + baseK*(conBonus*-0.03) #disBonus*-0.005)
         if probK < 0.05:
                 probK = 0.05
         # To get the probabilities for the Ball in play, out(s), it's the total change in probability for the other outcomes split between the two
@@ -442,6 +442,8 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                 print("\n")
                 time.sleep(playSpeed*2)
                 print("Let's get ready for some baseball!")
+                if playSpeed != 0 and isLive == True:
+                    pause = input("Press any key to begin")
                 time.sleep(playSpeed)
         while halfInning < maxInning: #18 half-innings = 9 innings total
                 if halfInning%2 == 0: #Even numbers = Top of inning, Odd Numbers = bottom of inning
@@ -478,12 +480,20 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                 runnerOnFirst = False #Sets all bases empty at the start of each inning
                 runnerOnSecond = False
                 runnerOnThird = False
+                if isLive == True and halfInning%2 == 0 and homePitcher["Pitches"] == 0:
+                    print("Pitching Change: RP", homePitcher["Name"], "is now in the game for the", homeTeam)
+                    print("So far this season he has pitched", homePitcher["IP"], "innings with", homePitcher["K"], "strikeouts and a", homePitcher["ERA"], "ERA")
+                elif isLive == True and halfInning%2 == 1 and awayPitcher["Pitches"] == 0:
+                    print("Pitching Change: RP", awayPitcher["Name"], "is now in the game for the", awayTeam)
+                    print("So far this season he has pitched", awayPitcher["IP"], "innings with", awayPitcher["K"], "strikeouts and a", homePitcher["ERA"], "ERA")
+                else:
+                    pass
 
                 while outs < 3: # While there are less then 3 outs (i.e. in the inning)
                         if isLive == True:
                                 time.sleep(2*playSpeed)
                                 if runnerOnFirst == False and runnerOnSecond == False and runnerOnThird == False:
-                                    basesText = random.choice(["Bases empty", "Nobody on", "Bases clear"])
+                                    basesText = random.choice(["Bases empty", "Nobody on with " + str(outs) + " outs", "Bases clear"])
                                 elif runnerOnFirst == False and runnerOnSecond == False and runnerOnThird != False:
                                     basesText = random.choice(["Runner at third", "Runner at third, watch for the wild pitch", "Runner leads off from 3rd"])
                                 elif runnerOnFirst == False and runnerOnSecond != False and runnerOnThird == False:
@@ -520,21 +530,22 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                 time.sleep(playSpeed)
                                 pitchText = ["is on the mound", "looks in for the sign", "gets set for the pitch", "comes set"]
                                 print(currentPitcher["Name"], random.choice(pitchText))
-                                #if playSpeed != 1 and isLive == True:
-                                    #pause = input("")
+                                time.sleep(playSpeed)
+                                #if playSpeed != 0 and isLive == True:
+                                #    pause = input("Press Any Key")
                                 print(random.choice(["Here's the pitch..", "The windup, and the delivery..", "The pitcher fires...", "Here it comes..", "The full-count delivery..."]))
-                                time.sleep(playSpeed*2) # Extra delay before the ball is hit
+                                time.sleep(playSpeed) # Extra delay before the ball is hit
 
                         # Steal Mechanism
                         
                         if runnerOnFirst == True and runnerOnSecond == False:
                             z= random.uniform(0,1)
-                            if z < 0.2:
+                            if z < 0.05: # Prob of attempting a steal (currently 5%)
                                 if isLive == True:
                                     print(random.choice(["Runner goes...", "He takes off from first...", "He'll try to steal!"]))
                                     time.sleep(playSpeed)
                                 a = random.uniform(0,1)
-                                if a < 0.7:
+                                if a < 0.7: # Prob of a successful steal
                                     if isLive == True:
                                         print("Safe!")
                                     runnerOnFirst = False
@@ -561,7 +572,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         outcome = playAtBat(probHR, prob3B, prob2B, prob1B, probBB, probFO, probGO, probK)
                         if outs == 3: # If the inning ends on a baserunning mistake the AB will not happen
                             outcome = "steal"
-                        currentPitcher["Pitches"] += round(random.normalvariate(4,1), 0)
+                        currentPitcher["Pitches"] += round(random.normalvariate(4,2), 0) # Average pitches per AB (mean 4 variance 1)
 
                         if outcome == "Flyout": # Inputs sacrifice flies and other base runner movement from flyouts
                                 if isLive == True:
@@ -582,7 +593,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                                         time.sleep(playSpeed)
                                                         print("Runner tags... and scores!")
                                                         time.sleep(playSpeed)
-                                                        print("Sacrifice Fly!")
+                                                        print("That'll be a sacrifice Fly!")
                                                         time.sleep(playSpeed)
                                                 awayRuns, homeRuns, currentBatter = scoreRuns(1, topOrBottom, awayRuns, homeRuns, isLive, awayTeam, homeTeam, currentBatter, halfInning, linescore,currentPitcher)
                                                 outs = outs + 1
@@ -940,7 +951,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                     time.sleep(playSpeed)
                                     print("hit on the ground to", random.choice(["first", "third"]))
                                     time.sleep(playSpeed)
-                                    print(random.choice(["and through! It's down the line in to the corner", "Fair Ball! Might be extra bases"]))
+                                    print(random.choice(["and through! It's down the line into the corner", "Fair Ball! Might be extra bases"]))
                                 elif DoubleType == "liner":
                                     time.sleep(playSpeed)
                                     print(random.choice(["line drive to", "hit hard into"]), direction)
@@ -956,7 +967,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                 time.sleep(playSpeed)
                                 print(random.choice(["And makes it easily", "Here comes the throw to second... Safe!"]))
                                 time.sleep(playSpeed)
-                                print(outcome)
+                                #print(outcome)
                             currentBatter["PA"] +=1
                             currentBatter["AB"] +=1
                             currentBatter["H"] +=1
@@ -1051,9 +1062,9 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                                 time.sleep(playSpeed)
                                 print(currentBatter["Name"], random.choice(["is going to try for third!", "turns on the jets around second!"]))
                                 time.sleep(playSpeed)
-                                print("SAFE!")
+                                print("the throw...the slide...SAFE!")
                                 time.sleep(playSpeed)
-                                print(outcome)
+                                #print(outcome)
                             currentBatter["PA"] +=1
                             currentBatter["AB"] +=1
                             currentBatter["H"] +=1
@@ -1224,10 +1235,10 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
 
                         # After outcome is played out
                         if topOrBottom == "Top":
-                            if outcome == "steal": # If the inning ends on the bases 
+                            if outcome == "steal": # If the inning ends on the bases, keep the same runner on
                                 pass
                             else:
-                                awayBatterNumber = awayBatterNumber + 1
+                                awayBatterNumber = awayBatterNumber + 1 # Increment Lineup by One Spot
                             if awayBatterNumber > 9:
                                 awayBatterNumber = 1
                         else:
@@ -1275,8 +1286,6 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         awayPitcher["G"] += 1
                     pitchLimit = random.randint(10,25)
                     awayRole = "Reliever"
-                    if isLive == True:
-                        print("Pitching Change: RP", awayPitcher["Name"], "is now in the game")
                 if homePitcher["Pitches"] > pitchLimit:
                     if len(homeAvailable) > 1: # If there are more pitchers available in the pen (Include starters if necessary)
                         if homeRole != "Starter": # If a reliever is being subbed out
@@ -1289,8 +1298,7 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
                         homePitcher["G"] += 1
                     pitchLimit = random.randint(10,25) # More or less 1 or 2 innings
                     homeRole = "Reliever" # Status of the current reliever
-                    if isLive == True:
-                        print("Pitching Change: RP", homePitcher["Name"], "is now in the game")
+
 
                 # Inning shenanigans
                 halfInning = halfInning + 1 # Adds a half-inning every time 3 outs are recorded
@@ -1324,7 +1332,9 @@ def playGame (awayTeam,homeTeam, playSpeed, isLive, leagueData):
         headerList.extend(["Runs", "Hits", "Errors"])
         if isLive == True:
                 print("Game Over")
+                time.sleep(playSpeed)
                 print("Final Score:", awayTeam, awayRuns, homeTeam, homeRuns)
+                time.sleep(playSpeed)
                 print("The ", awayTeam, " had ", awayHits, "hits")         
                 print("The ", homeTeam, " had ", homeHits, "hits")
                 print(winner,"win!")
@@ -1393,7 +1403,7 @@ def main():
                     print("Red Sox = 4")
                     awayTeam = int(input("What team would you like to play as?")) - 1
                     homeTeam = int(input("Who would you like the opponent to be?")) - 1
-                    playSpeed = float(input("How fast would you like to play? (0 = fastest, 1 = 10 minute delay")) # 1 = about 600 seconds, 0.5 = 300, etc etc
+                    playSpeed = float(input("How fast would you like to play? Enter delay between events in seconds (0 = fastest, 1 = 1 sec delay"))
                     leagueData = readCSV("BaseballSimBatters.csv", "BaseballSimPitchers.csv")
                     #leagueData = createPlayers(leagueData)
                     playGame(awayTeam,homeTeam, playSpeed, True, leagueData)
